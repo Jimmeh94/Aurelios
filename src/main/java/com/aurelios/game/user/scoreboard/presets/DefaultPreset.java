@@ -1,7 +1,8 @@
-package com.aurelios.game.user.sAureliosboard.presets;
+package com.aurelios.game.user.scoreboard.presets;
 
 import com.aurelios.Aurelios;
 import com.aurelios.game.user.UserPlayer;
+import com.aurelios.game.user.scoreboard.presets.ScoreboardPreset;
 import com.aurelios.game.user.stats.Stat;
 import com.aurelios.util.misc.StringUtils;
 import org.spongepowered.api.text.Text;
@@ -11,7 +12,7 @@ import org.spongepowered.api.text.format.TextStyles;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultPreset extends SAureliosboardPreset {
+public class DefaultPreset extends ScoreboardPreset {
 
     public DefaultPreset(UserPlayer player){
         super(player);

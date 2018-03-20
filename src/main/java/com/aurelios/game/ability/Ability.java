@@ -113,7 +113,7 @@ public abstract class Ability {
             }
 
             if(caster.isPlayer()){
-                ((UserPlayer)caster).getSAureliosboard().updateSAureliosboard();
+                ((UserPlayer)caster).getScoreboard().updateScoreboard();
             }
 
             /**

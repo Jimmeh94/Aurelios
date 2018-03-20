@@ -11,7 +11,7 @@ import com.aurelios.game.user.modules.tools.ModulePOICreator;
 import com.aurelios.game.user.modules.UserModule;
 import com.aurelios.game.user.modules.UserModuleTypes;
 import com.aurelios.game.user.modules.poll.Poll;
-import com.aurelios.game.user.sAureliosboard.SAureliosboard;
+import com.aurelios.game.user.scoreboard.Scoreboard;
 import com.aurelios.managers.Managers;
 import org.spongepowered.api.entity.living.player.Player;
 
@@ -23,7 +23,7 @@ public class UserPlayer extends User {
 
     private Player player;
     private Account account;
-    private SAureliosboard sAureliosboard;
+    private Scoreboard scoreboard;
     private ChatChannel chatChannel;
     private ChatChannelReceiver receiveChannel;
     private ChatColorTemplate chatColorTemplate;
@@ -63,7 +63,7 @@ public class UserPlayer extends User {
             modules.add(new ModulePOICreator(this));
         }
 
-        sAureliosboard = new SAureliosboard(this);
+        scoreboard = new Scoreboard(this);
 
         updateCurrentArea();
     }
@@ -85,6 +85,13 @@ public class UserPlayer extends User {
         }
         return Optional.empty();
 
+    }
+
+    @Override
+    public void cleanUp(){
+        super.cleanUp();
+
+        scoreboard.unregisterScoreboard();
     }
 
     public Player getPlayer() {
@@ -128,8 +135,8 @@ public class UserPlayer extends User {
         return receiveChannel;
     }
 
-    public SAureliosboard getSAureliosboard() {
-        return sAureliosboard;
+    public Scoreboard getScoreboard() {
+        return scoreboard;
     }
 
     public List<UserModule> getModules() {

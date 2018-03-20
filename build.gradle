@@ -41,6 +41,10 @@ repositories {
     mavenCentral()
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 dependencies {
     compileOnly 'org.spongepowered:spongeforge:1.12.2-2611-7.1.0-BETA-2931'
     compile 'org.mongodb:mongodb-driver:3.4.3'

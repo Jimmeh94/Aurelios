@@ -36,7 +36,7 @@ public class ConditionFocus extends AbilityCondition {
             caster.getStats().find(type).get().subtract(amount);
 
             if(caster.isPlayer()){
-                ((UserPlayer)caster).getSAureliosboard().updateSAureliosboard();
+                ((UserPlayer)caster).getScoreboard().updateScoreboard();
             }
             return false;
         }

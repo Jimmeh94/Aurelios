@@ -1,4 +1,4 @@
-package com.aurelios.game.user.sAureliosboard.presets;
+package com.aurelios.game.user.scoreboard.presets;
 
 import com.aurelios.game.user.UserPlayer;
 import org.spongepowered.api.text.Text;
@@ -6,7 +6,7 @@ import org.spongepowered.api.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SAureliosboardPreset {
+public class ScoreboardPreset {
 
     protected static Text BLANK_LINE = Text.of(" ");
 
@@ -19,7 +19,7 @@ public class SAureliosboardPreset {
      * Max of 15 entries, starting at the 2nd string
      */
 
-    public SAureliosboardPreset(UserPlayer owner){
+    public ScoreboardPreset(UserPlayer owner){
         this.owner = owner;
     }
 

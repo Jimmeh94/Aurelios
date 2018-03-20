@@ -78,7 +78,7 @@ public class User {
                 } else currentArea = node.get();
 
                 if(this instanceof UserPlayer){
-                    ((UserPlayer)this).getSAureliosboard().updateSAureliosboard();
+                    ((UserPlayer)this).getScoreboard().updateScoreboard();
                 }
             //}
         }
