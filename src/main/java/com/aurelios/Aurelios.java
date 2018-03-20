@@ -24,7 +24,7 @@ import org.spongepowered.api.plugin.PluginContainer;
         description = "A Sponge-Forge mod that takes inspiration from Fairy Tail and Ashes of Creation to create an MMORPG experience",
         authors = {
                 "Jimmy",
-                "Vextrix",
+                "Vectrix",
                 "SwiftLee"
         }
 )
@@ -46,7 +46,7 @@ public class Aurelios {
         INSTANCE = this;
         PLUGIN_CONTAINER = Sponge.getPluginManager().fromInstance(this).get();
 
-        mongoUtils = new MongoUtils("Admin", "admin", "@ds241737.mlab.com:41737/com.aurelios-sponge");
+        mongoUtils = new MongoUtils("Admin", "admin", "@ds117749.mlab.com:17749/aurelios");
         mongoUtils.openConnection();
     }
 
