@@ -1,20 +1,21 @@
 package com.aurelios;
 
-import com.aurelios.commands.*;
-import com.aurelios.event.*;
-import com.aurelios.managers.Managers;
-import com.aurelios.runnable.AbilityTimer;
-import com.aurelios.runnable.GameTimer;
-import com.aurelios.runnable.SlowTimer;
-import com.aurelios.util.database.MongoUtils;
-import com.aurelios.util.misc.Calendar;
+import com.aurelios.client.ClientProxy;
+import com.aurelios.common.ServerProxy;
+import com.aurelios.common.network.AureliosPacketHandler;
+import com.aurelios.common.commands.*;
+import com.aurelios.common.event.*;
+import com.aurelios.common.managers.Managers;
+import com.aurelios.common.runnable.AbilityTimer;
+import com.aurelios.common.runnable.GameTimer;
+import com.aurelios.common.runnable.SlowTimer;
+import com.aurelios.common.util.database.MongoUtils;
+import com.aurelios.common.util.misc.Calendar;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GameInitializationEvent;
-import org.spongepowered.api.event.game.state.GameStartingServerEvent;
-import org.spongepowered.api.event.game.state.GameStoppingEvent;
+import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 
@@ -35,11 +36,20 @@ public class Aurelios {
 
     @Inject
     private Logger logger;
+
     private GameTimer gameTimer;
     private SlowTimer slowTimer;
     private AbilityTimer abilityTimer;
     private MongoUtils mongoUtils;
     private Calendar calendar;
+
+    @Listener
+    public void onGamePreInit(GamePreInitializationEvent event){
+        AureliosPacketHandler.init();
+
+        ServerProxy.INSTANCE.preInit();
+        ClientProxy.INSTANCE.preInit();
+    }
 
     @Listener
     public void onGameInit(GameInitializationEvent event){
@@ -48,19 +58,32 @@ public class Aurelios {
 
         mongoUtils = new MongoUtils("Admin", "admin", "@ds117749.mlab.com:17749/aurelios");
         mongoUtils.openConnection();
+
+        ServerProxy.INSTANCE.init();
+        ClientProxy.INSTANCE.init();
     }
 
     @Listener
     public void onServerStarting(GameStartingServerEvent event){
         //register managers
 
-        Managers.init();
-
         registerListeners();
         registerRunnables();
         registerCommands();
 
         calendar = new Calendar();
+
+        Managers.init();
+    }
+
+    @Listener
+    public void onServerStopping(GameStoppingEvent event){
+        getMongoUtils().close();
+        Managers.AI.despawn();
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 
     private void registerCommands() {
@@ -72,12 +95,6 @@ public class Aurelios {
         new TestCommands();
         new ToolCommands();
         new AICommands();
-    }
-
-    @Listener
-    public void onServerStopping(GameStoppingEvent event){
-        mongoUtils.close();
-        Managers.AI.despawn();
     }
 
     private void registerRunnables(){
@@ -98,10 +115,6 @@ public class Aurelios {
         return mongoUtils;
     }
 
-    public Logger getLogger() {
-        return logger;
-    }
-
     public GameTimer getGameTimer() {
         return gameTimer;
     }
@@ -113,5 +126,4 @@ public class Aurelios {
     public Calendar getCalendar() {
         return calendar;
     }
-
 }
