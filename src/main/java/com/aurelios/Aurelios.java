@@ -1,17 +1,22 @@
 package com.aurelios;
 
 import com.aurelios.client.ClientProxy;
-import com.aurelios.common.ServerProxy;
-import com.aurelios.common.network.AureliosPacketHandler;
-import com.aurelios.common.commands.*;
-import com.aurelios.common.event.*;
-import com.aurelios.common.managers.Managers;
-import com.aurelios.common.runnable.AbilityTimer;
-import com.aurelios.common.runnable.GameTimer;
-import com.aurelios.common.runnable.SlowTimer;
-import com.aurelios.common.util.database.MongoUtils;
-import com.aurelios.common.util.misc.Calendar;
+import com.aurelios.server.IProxy;
+import com.aurelios.server.ServerProxy;
+import com.aurelios.server.network.AureliosPacketHandler;
+import com.aurelios.server.commands.*;
+import com.aurelios.server.event.*;
+import com.aurelios.server.managers.Managers;
+import com.aurelios.server.runnable.AbilityTimer;
+import com.aurelios.server.runnable.GameTimer;
+import com.aurelios.server.runnable.SlowTimer;
+import com.aurelios.server.util.database.MongoUtils;
+import com.aurelios.server.util.misc.Calendar;
 import com.google.inject.Inject;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.Listener;
@@ -31,7 +36,9 @@ import org.spongepowered.api.plugin.PluginContainer;
 )
 public class Aurelios {
 
+    @Mod.Instance
     public static Aurelios INSTANCE;
+
     public PluginContainer PLUGIN_CONTAINER;
 
     @Inject
@@ -43,12 +50,22 @@ public class Aurelios {
     private MongoUtils mongoUtils;
     private Calendar calendar;
 
+    @SidedProxy(clientSide = "com.aurelios.client.ClientProxy", serverSide = "com.aurelios.server.ServerProxy")
+    public static IProxy proxy;
+
+    @Mod.EventHandler
+    public void onPreInit(FMLPreInitializationEvent event){
+        proxy.preInit();
+    }
+
     @Listener
     public void onGamePreInit(GamePreInitializationEvent event){
         AureliosPacketHandler.init();
+    }
 
-        ServerProxy.INSTANCE.preInit();
-        ClientProxy.INSTANCE.preInit();
+    @Mod.EventHandler
+    public void onInit(FMLInitializationEvent event){
+        proxy.init();
     }
 
     @Listener
@@ -58,9 +75,6 @@ public class Aurelios {
 
         mongoUtils = new MongoUtils("Admin", "admin", "@ds117749.mlab.com:17749/aurelios");
         mongoUtils.openConnection();
-
-        ServerProxy.INSTANCE.init();
-        ClientProxy.INSTANCE.init();
     }
 
     @Listener

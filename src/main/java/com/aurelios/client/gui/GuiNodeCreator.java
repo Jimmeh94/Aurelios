@@ -1,13 +1,11 @@
 package com.aurelios.client.gui;
 
-import com.aurelios.common.network.ids.gui.GuiTypes;
-import com.aurelios.common.network.ids.gui.Identifiable;
+import com.aurelios.server.network.ids.gui.GuiTypes;
+import com.aurelios.server.network.ids.gui.Identifiable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.IOException;
 
