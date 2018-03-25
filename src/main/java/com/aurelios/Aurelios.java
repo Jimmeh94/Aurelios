@@ -8,6 +8,7 @@ import com.aurelios.server.managers.Managers;
 import com.aurelios.server.runnable.AbilityTimer;
 import com.aurelios.server.runnable.GameTimer;
 import com.aurelios.server.runnable.SlowTimer;
+import com.aurelios.server.runnable.Timers;
 import com.aurelios.server.util.database.MongoUtils;
 import com.aurelios.server.util.misc.Calendar;
 import com.google.inject.Inject;
@@ -16,16 +17,16 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.*;
+import org.spongepowered.api.event.game.state.GameStartingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.plugin.PluginContainer;
 
 @Plugin(
-        id = "aurelios",
-        name = "Aurelios",
+        id = Aurelios.ID,
+        name = Aurelios.NAME,
         description = "A Sponge-Forge mod that takes inspiration from Fairy Tail and Ashes of Creation to create an MMORPG experience",
         authors = {
                 "Jimmy",
@@ -34,34 +35,29 @@ import org.spongepowered.api.plugin.PluginContainer;
         }
 )
 
-//@Mod(modid = "aurelios", name = "Aurelios", version = "1.0.0")
 public class Aurelios {
 
     @Mod.Instance
     public static Aurelios INSTANCE;
 
-    public PluginContainer PLUGIN_CONTAINER;
+    public static final String ID = "aurelios";
+    public static final String NAME = "Aurelios";
 
     @Inject
     private Logger logger;
-
-    private GameTimer gameTimer;
-    private SlowTimer slowTimer;
-    private AbilityTimer abilityTimer;
     private MongoUtils mongoUtils;
     private Calendar calendar;
+    private Timers timers;
 
-    @SidedProxy(clientSide = "com.aurelios.client.ClientProxy", serverSide = "com.aurelios.server.ServerProxy", modId = "aurelios")
+    @SidedProxy(clientSide = "com.aurelios.client.ClientProxy", serverSide = "com.aurelios.server.ServerProxy", modId = ID)
     public static IProxy proxy;
 
+    /**
+     * ************* FML EVENTS ******************************
+     */
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event){
         proxy.preInit();
-    }
-
-    @Listener
-    public void onGamePreInit(GamePreInitializationEvent event){
-       // AureliosPacketHandler.init();
     }
 
     @Mod.EventHandler
@@ -70,36 +66,32 @@ public class Aurelios {
         AureliosPacketHandler.init();
     }
 
-    @Listener
-    public void onGameInit(GameInitializationEvent event){
-        INSTANCE = this;
-        PLUGIN_CONTAINER = Sponge.getPluginManager().fromInstance(this).get();
-
-        mongoUtils = new MongoUtils("Admin", "admin", "@ds117749.mlab.com:17749/aurelios");
-        mongoUtils.openConnection();
-    }
-
     @Mod.EventHandler
     public void onFMLServerStarting(FMLServerStartingEvent event){
         //event.registerServerCommand(new com.aurelios.server.commands.forge.ToolCommands());
-    }
+        //INSTANCE = this;
 
-    @Listener
-    public void onServerStarting(GameStartingServerEvent event){
-        //register managers
-
-        registerListeners();
-        registerRunnables();
-        registerCommands();
+        mongoUtils = new MongoUtils("Admin", "admin", "@ds117749.mlab.com:17749/aurelios");
+        mongoUtils.openConnection();
 
         calendar = new Calendar();
-
         Managers.init();
     }
 
-    @Listener
-    public void onServerStopping(GameStoppingEvent event){
+    @Mod.EventHandler
+    public void onStop(FMLServerStoppingEvent event){
         proxy.stoppingServer();
+    }
+
+    /**
+     * ********** SPONGE EVENTS *****************************
+     */
+
+    @Listener
+    public void onServerStarting(GameStartingServerEvent event){
+        registerCommands();
+        registerListeners();
+        timers = new Timers();
     }
 
     public Logger getLogger() {
@@ -117,12 +109,6 @@ public class Aurelios {
         new AICommands();
     }
 
-    private void registerRunnables(){
-        gameTimer = new GameTimer(5L);
-        slowTimer = new SlowTimer(20L);
-        abilityTimer = new AbilityTimer(1L);
-    }
-
     private void registerListeners(){
         Sponge.getEventManager().registerListeners(this, new PlayerConnectionEvents());
         Sponge.getEventManager().registerListeners(this, new PlayerInteractEvents());
@@ -135,15 +121,11 @@ public class Aurelios {
         return mongoUtils;
     }
 
-    public GameTimer getGameTimer() {
-        return gameTimer;
-    }
-
-    public AbilityTimer getAbilityTimer() {
-        return abilityTimer;
-    }
-
     public Calendar getCalendar() {
         return calendar;
+    }
+
+    public Timers getTimers() {
+        return timers;
     }
 }

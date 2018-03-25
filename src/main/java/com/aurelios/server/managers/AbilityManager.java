@@ -74,7 +74,7 @@ public class AbilityManager extends Manager<AbilityManager.Entry> {
         }
 
         public boolean shouldUpdate(){
-            lastUpdated += Aurelios.INSTANCE.getAbilityTimer().getTask().getInterval();
+            lastUpdated += Aurelios.INSTANCE.getTimers().abilityTimer.getTask().getInterval();
             if(lastUpdated >= interval){
                 lastUpdated = 0L;
                 return true;
