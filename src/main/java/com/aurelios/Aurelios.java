@@ -1,8 +1,6 @@
 package com.aurelios;
 
-import com.aurelios.client.ClientProxy;
 import com.aurelios.server.IProxy;
-import com.aurelios.server.ServerProxy;
 import com.aurelios.server.network.AureliosPacketHandler;
 import com.aurelios.server.commands.*;
 import com.aurelios.server.event.*;
@@ -17,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.Listener;
@@ -34,6 +33,8 @@ import org.spongepowered.api.plugin.PluginContainer;
                 "SwiftLee"
         }
 )
+
+//@Mod(modid = "aurelios", name = "Aurelios", version = "1.0.0")
 public class Aurelios {
 
     @Mod.Instance
@@ -50,7 +51,7 @@ public class Aurelios {
     private MongoUtils mongoUtils;
     private Calendar calendar;
 
-    @SidedProxy(clientSide = "com.aurelios.client.ClientProxy", serverSide = "com.aurelios.server.ServerProxy")
+    @SidedProxy(clientSide = "com.aurelios.client.ClientProxy", serverSide = "com.aurelios.server.ServerProxy", modId = "aurelios")
     public static IProxy proxy;
 
     @Mod.EventHandler
@@ -60,12 +61,13 @@ public class Aurelios {
 
     @Listener
     public void onGamePreInit(GamePreInitializationEvent event){
-        AureliosPacketHandler.init();
+       // AureliosPacketHandler.init();
     }
 
     @Mod.EventHandler
     public void onInit(FMLInitializationEvent event){
         proxy.init();
+        AureliosPacketHandler.init();
     }
 
     @Listener
@@ -75,6 +77,11 @@ public class Aurelios {
 
         mongoUtils = new MongoUtils("Admin", "admin", "@ds117749.mlab.com:17749/aurelios");
         mongoUtils.openConnection();
+    }
+
+    @Mod.EventHandler
+    public void onFMLServerStarting(FMLServerStartingEvent event){
+        //event.registerServerCommand(new com.aurelios.server.commands.forge.ToolCommands());
     }
 
     @Listener
@@ -92,8 +99,7 @@ public class Aurelios {
 
     @Listener
     public void onServerStopping(GameStoppingEvent event){
-        getMongoUtils().close();
-        Managers.AI.despawn();
+        proxy.stoppingServer();
     }
 
     public Logger getLogger() {

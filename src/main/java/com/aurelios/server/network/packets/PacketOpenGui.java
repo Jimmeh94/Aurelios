@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketOpenGui implements IMessage {
 
@@ -32,7 +33,9 @@ public class PacketOpenGui implements IMessage {
 
         @Override
         public IMessage onMessage(PacketOpenGui message, MessageContext ctx) {
-            Aurelios.proxy.openGUI(message.guiType);
+            if(ctx.side == Side.CLIENT) {
+                Aurelios.proxy.openGUI(message.guiType);
+            }
             return null;
         }
     }

@@ -8,5 +8,6 @@ public interface IProxy {
     void init();
     void postInit();
     void openGUI(GuiTypes type);
+    void stoppingServer();
 
 }

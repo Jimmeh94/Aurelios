@@ -26,10 +26,6 @@ public class GuiNodeCreator extends GuiScreen implements Identifiable{
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        System.out.println("HERE ===================");
-        if(texture == null){
-            Minecraft.getMinecraft().player.sendChatMessage("NULL");
-        }
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         //where on the screen x, where on the screen y, where on texture x, where on texture y, width, height
         drawTexturedModalRect(0, 0, 0, 0, guiWidth, guiHeight);
