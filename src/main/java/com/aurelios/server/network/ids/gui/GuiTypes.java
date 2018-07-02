@@ -28,6 +28,7 @@ public enum GuiTypes {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     public GuiScreen getGui() {
         switch (this){
             case GUI_NODE_CREATOR: return new GuiNodeCreator();

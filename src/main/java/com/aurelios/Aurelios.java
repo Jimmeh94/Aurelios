@@ -5,9 +5,6 @@ import com.aurelios.server.network.AureliosPacketHandler;
 import com.aurelios.server.commands.*;
 import com.aurelios.server.event.*;
 import com.aurelios.server.managers.Managers;
-import com.aurelios.server.runnable.AbilityTimer;
-import com.aurelios.server.runnable.GameTimer;
-import com.aurelios.server.runnable.SlowTimer;
 import com.aurelios.server.runnable.Timers;
 import com.aurelios.server.util.database.MongoUtils;
 import com.aurelios.server.util.misc.Calendar;
@@ -23,6 +20,7 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.plugin.PluginContainer;
 
 @Plugin(
         id = Aurelios.ID,
@@ -39,6 +37,8 @@ public class Aurelios {
 
     @Mod.Instance
     public static Aurelios INSTANCE;
+
+    public PluginContainer PLUGIN_CONTAINER;
 
     public static final String ID = "aurelios";
     public static final String NAME = "Aurelios";
@@ -69,13 +69,6 @@ public class Aurelios {
     @Mod.EventHandler
     public void onFMLServerStarting(FMLServerStartingEvent event){
         //event.registerServerCommand(new com.aurelios.server.commands.forge.ToolCommands());
-        //INSTANCE = this;
-
-        mongoUtils = new MongoUtils("Admin", "admin", "@ds117749.mlab.com:17749/aurelios");
-        mongoUtils.openConnection();
-
-        calendar = new Calendar();
-        Managers.init();
     }
 
     @Mod.EventHandler
@@ -89,6 +82,15 @@ public class Aurelios {
 
     @Listener
     public void onServerStarting(GameStartingServerEvent event){
+        INSTANCE = this;
+        PLUGIN_CONTAINER = Sponge.getPluginManager().fromInstance(this).get();
+
+        mongoUtils = new MongoUtils("Admin", "admin", "@ds117749.mlab.com:17749/aurelios");
+        mongoUtils.openConnection();
+
+        calendar = new Calendar();
+        Managers.init();
+
         registerCommands();
         registerListeners();
         timers = new Timers();

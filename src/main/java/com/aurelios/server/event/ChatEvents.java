@@ -20,7 +20,7 @@ public class ChatEvents {
         UserPlayer userPlayer = Managers.USER.findPlayer(player.getUniqueId()).get();
         userPlayer.getChatChannel().displayMessage(build(event.getRawMessage().toPlain(), userPlayer));
 
-        //Now we're going to check for receiver channels listening to this player
+        //Now we're going to check for receiver channels listening to this player (a channel that just listens for messages from this player)
         for(User user: Managers.USER.getObjects()){
             if(!user.isPlayer()){
                 continue;

@@ -1,5 +1,6 @@
 package com.aurelios.server.game.user;
 
+import com.aurelios.server.event.custom.AreaEvents;
 import com.aurelios.server.game.ability.Ability;
 import com.aurelios.server.game.ability.enums.AbilityConditionType;
 import com.aurelios.server.game.environment.nodes.Area;
@@ -9,7 +10,11 @@ import com.aurelios.server.game.environment.nodes.WildernessNode;
 import com.aurelios.server.game.user.stats.Stat;
 import com.aurelios.server.game.user.stats.StatCollection;
 import com.aurelios.server.managers.Managers;
+import com.aurelios.server.util.misc.MiscTools;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.Living;
+import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.EventContext;
 
 import java.util.List;
 import java.util.Optional;
@@ -71,7 +76,9 @@ public class User {
             //included the below if statement so that the extra code wouldn't run if the player
             //hasn't entered a different area from the one they're already in.
             //Perhaps move to an event based system for entering/exiting nodes to replace the if statement
-            //if(currentArea == null || (currentArea != null && currentArea != node.get())) {
+            if(currentArea == null || (currentArea != null && currentArea != node.get() && !currentArea.equals(node.get()))) {
+
+                Area old = node.get();
 
                 if(!(node.get() instanceof WildernessNode)){
                     currentArea = node.get().getContainingArea(entity.getLocation()).get();
@@ -79,8 +86,10 @@ public class User {
 
                 if(this instanceof UserPlayer){
                     ((UserPlayer)this).getScoreboard().updateScoreboard();
+                    Sponge.getEventManager().post(new AreaEvents.PlayerEnterArea(node.get(), ((UserPlayer)this), MiscTools.getEmptyCause()));
+                    Sponge.getEventManager().post(new AreaEvents.PlayerLeaveArea(old, ((UserPlayer)this), MiscTools.getEmptyCause()));
                 }
-            //}
+            }
         }
     }
 

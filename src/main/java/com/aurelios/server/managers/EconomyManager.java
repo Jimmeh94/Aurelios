@@ -3,6 +3,7 @@ package com.aurelios.server.managers;
 
 import com.aurelios.server.game.economy.Account;
 import com.aurelios.server.game.economy.TransactionResult;
+import org.spongepowered.api.Sponge;
 
 public class EconomyManager{
 
@@ -15,6 +16,7 @@ public class EconomyManager{
             receiver.deposit(amount);
             TransactionResult.SUCCESS.display(sender);
             TransactionResult.SUCCESS.display(receiver);
+
         } else {
             TransactionResult.NOT_ENOUGH_MONEY.display(sender);
         }

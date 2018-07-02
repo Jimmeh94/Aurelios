@@ -1,7 +1,11 @@
 package com.aurelios.server.util.misc;
 
+import com.aurelios.server.event.custom.DayEvents;
 import com.aurelios.server.managers.Managers;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.EventContext;
+import org.spongepowered.api.event.cause.EventContextKeys;
 
 import java.text.DecimalFormat;
 
@@ -38,7 +42,9 @@ public class Calendar {
                 totalDays %= 7;
             }
             currentDayOfWeek = DayOfWeek.values()[totalDays];
-        } else currentDayOfWeek = DayOfWeek.getNextDay(currentDayOfWeek);
+        } else {
+            currentDayOfWeek = DayOfWeek.getNextDay(currentDayOfWeek);
+        }
     }
 
     public enum DayOfWeek{
@@ -102,6 +108,7 @@ public class Calendar {
                     hours = 1;
                     calendar.setCurrentDayOfWeek();
                     Managers.AI.regenerateDailySchedules();
+                    Sponge.getEventManager().post(new DayEvents.DayBeginEvent(MiscTools.getEmptyCause(), calendar.time));
                 }
             }
         }

@@ -23,7 +23,7 @@ public class DefaultPreset extends ScoreboardPreset {
         UserPlayer owner = getOwner();
         List<Text> strings = new ArrayList<>();
 
-        strings.add(Text.of(TextStyles.BOLD, "Ashes of Creation"));
+        strings.add(Text.of(TextStyles.BOLD, "Aurelios"));
         strings.add(Text.of("=============="));
         //strings.add(owner.getPresentArea().getDisplayName());
         strings.add(Text.of(TextColors.RED));

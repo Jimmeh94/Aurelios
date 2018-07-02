@@ -17,6 +17,7 @@ public class SlowTimer extends AbstractTimer {
         Managers.BLOCK.tick();
         Aurelios.INSTANCE.getCalendar().tick();
         Managers.AI.tick();
+        Managers.USER.slowTick();
 
         //TODO REMOVE THIS
         Managers.NODES.tick();
