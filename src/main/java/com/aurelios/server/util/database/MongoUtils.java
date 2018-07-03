@@ -207,6 +207,11 @@ public class MongoUtils {
         MongoCollection<Document> col = database.getCollection(COLLECTION_NPCS);
 
         for(NPC npc: Managers.AI.getObjects()){
+            if(col.find(eq("uuid", npc.getMetaData().getUuid().toString())).first() != null){
+                //already exists
+                continue;
+            }
+
             //TODO update existing ones here
             AIMetaData metaData = npc.getMetaData();
             Document add = new Document("uuid", metaData.getUuid().toString());

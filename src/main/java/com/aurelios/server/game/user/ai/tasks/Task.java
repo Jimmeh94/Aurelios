@@ -18,6 +18,8 @@ public abstract class Task {
     private TaskStage stage;
     private TaskType taskType;
 
+    protected abstract void perform();
+
     public Task(int howLongToAccomplish, DailySchedule owner, TaskType taskType) {
         this.howLongToAccomplish = howLongToAccomplish;
         this.owner = owner;
@@ -27,11 +29,14 @@ public abstract class Task {
     }
 
     public void performTask(){
+        //TODO remove this VVV
+        stage = TaskStage.PERFORMING_TASK;
         //TODO do something with this
         if(stage == TaskStage.MOVING_TO_LOCATION){
             //When the NPC is tied to a user, then we will check if the current area == location, if so, change stage
         } else if(stage == TaskStage.PERFORMING_TASK){
             //Do some incremental thing or something
+            perform();
         }
     }
 
@@ -40,7 +45,10 @@ public abstract class Task {
             //Here we are assuming that where the NPC calls home, there's at least 1 area that they can use for work.
             //Meaning an applicable POI
             List<PointOfInterest> possible = owner.getOwner().getMetaData().getHome().getPOIsWithRole(owner.getOwner().getMetaData().getRole());
-            location = possible.get((new Random()).nextInt(possible.size()));
+
+            if(possible.size() > 0) {
+                location = possible.get((new Random()).nextInt(possible.size()));
+            }
         } else if(taskType == TaskType.ASPIRATION){
 
         } else if(taskType == TaskType.SOCIAL){

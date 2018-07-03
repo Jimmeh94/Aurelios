@@ -19,6 +19,8 @@ import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartingServerEvent;
+import org.spongepowered.api.event.game.state.GameStoppingEvent;
+import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 
@@ -30,7 +32,8 @@ import org.spongepowered.api.plugin.PluginContainer;
                 "Jimmy",
                 "Vectrix",
                 "SwiftLee"
-        }
+        },
+        dependencies = @Dependency(id = "teslapowered")
 )
 
 public class Aurelios {
@@ -73,7 +76,7 @@ public class Aurelios {
 
     @Mod.EventHandler
     public void onStop(FMLServerStoppingEvent event){
-        proxy.stoppingServer();
+        //proxy.stoppingServer();
     }
 
     /**
@@ -94,6 +97,12 @@ public class Aurelios {
         registerCommands();
         registerListeners();
         timers = new Timers();
+    }
+
+    @Listener
+    public void onServerStopping(GameStoppingEvent event){
+        Aurelios.INSTANCE.getMongoUtils().close();
+        Managers.AI.despawn();
     }
 
     public Logger getLogger() {

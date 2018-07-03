@@ -41,6 +41,11 @@ public class ModulePOICreator extends ModuleTool {
     }
 
     public void setRoles(String roles) {
+        if(roles.toLowerCase().trim() == "all"){
+            this.roles = Role.values();
+            return;
+        }
+
         String[] temp = roles.split(",");
         this.roles = new Role[temp.length];
         for(int i = 0; i < temp.length; i++){

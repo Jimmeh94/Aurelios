@@ -1,6 +1,7 @@
 package com.aurelios.server.commands;
 
 import com.aurelios.Aurelios;
+import com.aurelios.server.game.user.modules.tools.ModuleAreaCreator;
 import com.aurelios.server.network.AureliosPacketHandler;
 import com.aurelios.server.network.ids.gui.GuiTypes;
 import com.aurelios.server.network.packets.PacketOpenGui;
@@ -55,9 +56,9 @@ public class ToolCommands implements CommandExecutor {
             switch (args.<String>getOne("type").get()){
                 case "node": {
                     if(owner.hasModule(UserModuleTypes.NODE_CREATOR)){
-                        AureliosPacketHandler.INSTANCE.sendTo(new PacketOpenGui(GuiTypes.GUI_NODE_CREATOR), (EntityPlayerMP) player);
+                        //AureliosPacketHandler.INSTANCE.sendTo(new PacketOpenGui(GuiTypes.GUI_NODE_CREATOR), (EntityPlayerMP) player);
 
-                        /*UserModule module = owner.getModule(UserModuleTypes.NODE_CREATOR).get();
+                        UserModule module = owner.getModule(UserModuleTypes.NODE_CREATOR).get();
                         if(args.<Double>getOne("radius").isPresent()){
                             if(!module.isEnabled()){
                                 module.enable();
@@ -84,7 +85,7 @@ public class ToolCommands implements CommandExecutor {
                             Messager.sendMessage(Message.builder().addReceiver(owner.getPlayer())
                                     .addMessage(Text.of(TextColors.GREEN, "Ai cap set to " + args.<String>getOne("aiCap/roles").get()), Messager.Prefix.SUCCESS)
                                     .build());
-                        }*/
+                        }
                     } else Messager.sendMessage(Message.builder().addReceiver(owner.getPlayer())
                             .addMessage(Text.of(TextColors.RED, "You can't access this!"), Messager.Prefix.ERROR)
                             .build());

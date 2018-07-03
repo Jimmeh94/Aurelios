@@ -5,6 +5,7 @@ import com.aurelios.server.game.user.ai.NPC;
 import com.aurelios.server.game.user.ai.traits.Role;
 import com.aurelios.server.managers.Managers;
 import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 
@@ -21,6 +22,8 @@ public class Node extends Area{
 
     //This is the amount of AI that will ideally be alive in this node at one time
     private int aiCap;
+
+
 
     //protected abstract void loadChildren();
 
@@ -112,5 +115,9 @@ public class Node extends Area{
             }
         }
         return possible;
+    }
+
+    public void displayNPCMenu(Player player){
+
     }
 }

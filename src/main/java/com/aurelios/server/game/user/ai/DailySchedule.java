@@ -97,7 +97,6 @@ public class DailySchedule {
 
         if(!tasks.get(0).hasStarted()){
             tasks.get(0).start();
-            System.out.println("Started: " + tasks.get(0).getClass().getCanonicalName());
         }
         if(tasks.get(0).isFinished()){
             tasks.remove(0);

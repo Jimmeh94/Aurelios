@@ -7,4 +7,9 @@ public class TaskWork extends Task {
     public TaskWork(int howLongToAccomplish, DailySchedule owner) {
         super(howLongToAccomplish, owner, TaskType.WORK);
     }
+
+    @Override
+    protected void perform() {
+
+    }
 }
