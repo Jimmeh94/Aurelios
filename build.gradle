@@ -78,7 +78,8 @@ processResources {
 
 shadowJar {
     dependencies {
-        include dependency("com.github.SimonFlash.TeslaPowered:TeslaLibs:v1.1.3")
+        include dependency("org.mongodb:mongo-java-driver")
+        include dependency("com.github.SimonFlash.TeslaPowered:TeslaLibs")
     }
     relocate 'com.mcsimonflash.sponge.teslalibs', 'com.aurelios.server.util.teslalibs'
 }
