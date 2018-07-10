@@ -8,7 +8,7 @@ import java.util.UUID;
 public class Relationship {
 
     private UUID npcOne, npcTwo;
-    private int trust; //from 0-100 (0 being strangers, 100 being best friends)
+    private double trust; //from 0-100 (0 being strangers, 100 being best friends)
 
     public Relationship(UUID npcOne, UUID npcTwo) {
         this.npcOne = npcOne;
@@ -17,7 +17,7 @@ public class Relationship {
     }
 
     public void incrementTrust(){
-        trust++;
+        trust += 0.1;
         checkTrust();
     }
 
@@ -54,7 +54,7 @@ public class Relationship {
         return npcTwo;
     }
 
-    public int getTrust() {
+    public double getTrust() {
         return trust;
     }
 

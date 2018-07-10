@@ -32,8 +32,7 @@ import org.spongepowered.api.plugin.PluginContainer;
                 "Jimmy",
                 "Vectrix",
                 "SwiftLee"
-        },
-        dependencies = @Dependency(id = "teslapowered")
+        }
 )
 
 public class Aurelios {

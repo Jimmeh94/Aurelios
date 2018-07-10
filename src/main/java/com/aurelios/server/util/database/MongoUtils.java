@@ -105,7 +105,6 @@ public class MongoUtils {
         npcs.find().forEach(new Block<Document>() {
             @Override
             public void apply(Document document) {
-                System.out.println("APPLY");
                 String[] temp = document.getString("name").split(" ");
                 String[] as = document.getString("aspirations").split(",");
                 List<Aspiration> aspirations = new CopyOnWriteArrayList<>();

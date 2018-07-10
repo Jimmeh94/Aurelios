@@ -9,16 +9,12 @@ public class TaskLazy extends Task {
      * This task is for walking around or hanging out at a POI (home, tavern, park, etc)
      */
 
-    private boolean hasPerformed = false;
-
     public TaskLazy(int howLongToAccomplish, DailySchedule owner) {
         super(howLongToAccomplish, owner, TaskType.LAZY);
     }
 
     @Override
     public void perform() {
-        if(!hasPerformed && Managers.AI.simulateNPCRelationship(getOwner().getOwner())) {
-            hasPerformed = true;
-        }
+        Managers.AI.simulateNPCRelationship(getOwner().getOwner());
     }
 }

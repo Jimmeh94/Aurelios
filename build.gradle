@@ -53,7 +53,7 @@ tasks.withType(JavaCompile) {
 
 dependencies {
     compileOnly 'org.spongepowered:spongeforge:1.12.2-2611-7.1.0-BETA-2931'
-    compile 'org.mongodb:mongodb-driver:3.4.3'
+    compile 'org.mongodb:mongo-java-driver:3.8.0'
     compile 'com.github.SimonFlash.TeslaPowered:TeslaLibs:v1.1.3'
 }
 
@@ -78,7 +78,7 @@ processResources {
 
 shadowJar {
     dependencies {
-        include dependency("com.github.SimonFlash.TeslaPowered:TeslaLibs")
+        include dependency("com.github.SimonFlash.TeslaPowered:TeslaLibs:v1.1.3")
     }
     relocate 'com.mcsimonflash.sponge.teslalibs', 'com.aurelios.server.util.teslalibs'
 }
