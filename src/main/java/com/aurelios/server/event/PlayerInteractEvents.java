@@ -3,6 +3,7 @@ package com.aurelios.server.event;
 import com.aurelios.server.game.environment.nodes.Node;
 import com.aurelios.server.game.environment.nodes.PointOfInterest;
 import com.aurelios.server.game.environment.nodes.shapes.ShapeCircle;
+import com.aurelios.server.game.environment.nodes.shapes.ShapeRectangle;
 import com.aurelios.server.game.user.UserPlayer;
 import com.aurelios.server.game.user.modules.tools.ModuleAreaCreator;
 import com.aurelios.server.game.user.modules.tools.ModulePOICreator;
@@ -29,8 +30,13 @@ public class PlayerInteractEvents {
             ModulePOICreator poiCreator = (ModulePOICreator) userPlayer.getModule(UserModuleTypes.POI_CREATOR).get();
 
             if(userPlayer.getModule(UserModuleTypes.NODE_CREATOR).get().isEnabled()) {
-                Managers.NODES.add(new Node(UUID.randomUUID(), Text.of(areaCreator.getName()), new ShapeCircle(
-                        event.getTargetBlock().getLocation().get().getPosition(), areaCreator.getRadius(), true), areaCreator.getAiCap()));
+                if(areaCreator.isCircle()) {
+                    Managers.NODES.add(new Node(UUID.randomUUID(), Text.of(areaCreator.getName()), new ShapeCircle(
+                            event.getTargetBlock().getLocation().get().getPosition(), areaCreator.getRadius(), true), areaCreator.getAiCap()));
+                } else {
+                    Managers.NODES.add(new Node(UUID.randomUUID(), Text.of(areaCreator.getName()), new ShapeRectangle(areaCreator.getCorner1(), areaCreator.getCorner2()),
+                            areaCreator.getAiCap()));
+                }
                 areaCreator.disable();
             } else if(userPlayer.hasModule(UserModuleTypes.POI_CREATOR) && userPlayer.getModule(UserModuleTypes.POI_CREATOR).get().isEnabled()){
                 Optional<Node> node = Managers.NODES.findNode(event.getTargetBlock().getLocation().get());
@@ -40,6 +46,7 @@ public class PlayerInteractEvents {
                                     ((ModulePOICreator)userPlayer.getModule(UserModuleTypes.POI_CREATOR).get()).getRadius(), false),
                             node.get(), poiCreator.getRoles() == null ? null : poiCreator.getRoles()));
                     poiCreator.disable();
+                    node.get().updatePOIMenu();
                 }
             }
         }

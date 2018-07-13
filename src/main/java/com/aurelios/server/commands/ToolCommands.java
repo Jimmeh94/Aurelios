@@ -1,6 +1,9 @@
 package com.aurelios.server.commands;
 
 import com.aurelios.Aurelios;
+import com.aurelios.server.game.environment.nodes.Node;
+import com.aurelios.server.game.environment.nodes.PointOfInterest;
+import com.aurelios.server.game.environment.nodes.WildernessNode;
 import com.aurelios.server.game.user.modules.tools.ModuleAreaCreator;
 import com.aurelios.server.network.AureliosPacketHandler;
 import com.aurelios.server.network.ids.gui.GuiTypes;
@@ -124,6 +127,18 @@ public class ToolCommands implements CommandExecutor {
                     } else Messager.sendMessage(Message.builder().addReceiver(owner.getPlayer())
                             .addMessage(Text.of(TextColors.RED, "You can't access this!"), Messager.Prefix.ERROR)
                             .build());
+                }
+                    break;
+                case "info":{
+                    if(!(owner.getCurrentArea() instanceof WildernessNode) && owner.getCurrentArea() instanceof Node){
+                        owner.getCurrentNode().displayNPCMenu(owner.getPlayer());
+                    }
+                }
+                    break;
+                case "edit":{
+                    if(!(owner.getCurrentArea() instanceof WildernessNode) && owner.getCurrentArea() instanceof Node){
+                        owner.getCurrentNode().displayPOIMenu(owner.getPlayer());
+                    }
                 }
             }
         } else printHelpMessage(player);

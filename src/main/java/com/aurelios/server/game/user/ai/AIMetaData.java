@@ -3,8 +3,10 @@ package com.aurelios.server.game.user.ai;
 import com.aurelios.server.game.environment.nodes.Node;
 import com.aurelios.server.game.user.ai.traits.*;
 import com.aurelios.server.game.user.ai.traits.personality.Personality;
+import com.aurelios.server.managers.Manager;
 import com.aurelios.server.managers.Managers;
 import com.aurelios.server.util.misc.StringUtils;
+import org.spongepowered.api.text.Text;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -160,6 +162,28 @@ public class AIMetaData {
         System.out.println("- aspirations: " + StringUtils.enumToString(true, aspirations.toArray(new Aspiration[]{})));
         //System.out.println("- aspirations: " + aspirations.get(0).getDescription());
         System.out.println("=========================");
+    }
+
+    public List<Text> getMetaDataAsList(){
+        List<Text> give = new ArrayList<>();
+
+        give.add(Text.of(firstName + " " + lastName + ": "));
+        give.add(Text.of("- age: " + age));
+        give.add(Text.of("- gender: " + StringUtils.enumToString(gender, true)));
+        give.add(Text.of("- race: " + StringUtils.enumToString(race, true)));
+        give.add(Text.of("- e class: " + StringUtils.enumToString(economicClass, true)));
+        give.add(Text.of("- personality: " + StringUtils.enumToString(personality.getType(), true)));
+        give.add(Text.of("- ambition: " + StringUtils.enumToString(ambition, true)));
+        give.add(Text.of("- morality: " + StringUtils.enumToString(morality, true)));
+        give.add(Text.of("- role: " + StringUtils.enumToString(role, true)));
+        give.add(Text.of("- aspirations: " + StringUtils.enumToString(true, aspirations.toArray(new Aspiration[]{}))));
+
+        for(Relationship relationship: Managers.AI.getRelationships(Managers.AI.findNPC(uuid).get())){
+            give.add(Text.of("- relationship: " + Managers.AI.findNPC(relationship.getNpcOne()).get().getMetaData().getFullName() + ", "
+                    + Managers.AI.findNPC(relationship.getNpcTwo()).get().getMetaData().getFullName() + ": " + relationship.getTrust()));
+        }
+
+        return give;
     }
 
     public boolean isCompatibleWith(NPC npc2) {
