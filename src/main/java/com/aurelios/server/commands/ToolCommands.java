@@ -140,6 +140,10 @@ public class ToolCommands implements CommandExecutor {
                         owner.getCurrentNode().displayPOIMenu(owner.getPlayer());
                     }
                 }
+                    break;
+                case "create":{
+                    Managers.NODES.displayNodeMenu(owner.getPlayer());
+                }
             }
         } else printHelpMessage(player);
 
